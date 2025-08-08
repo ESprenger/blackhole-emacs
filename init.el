@@ -184,10 +184,16 @@
   (modify-coding-system-alist 'file "" 'utf-8)
   )
 
+;; Load env variables from bashrc
 (use-package exec-path-from-shell
   :straight t
   :config
   (exec-path-from-shell-initialize))
+
+;; Load ssh keys from ssh-agent
+(use-package keychain-environment
+  :straight t
+  :config (keychain-refresh-environment))
 
 (defvar module-list '(
                       "+defaults"
