@@ -1,9 +1,9 @@
-;;; +shells.el --- Description -*- no-byte-compile: t; lexical-binding: t; -*-
+;;; +terminals.el --- Description -*- no-byte-compile: t; lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2025 Evan Sprenger
 ;;
 ;; Author: Evan Sprenger <evan.sprenger@gmail.com>
-;; Created: July 22, 2025
+;; Created: 2025
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
@@ -13,8 +13,42 @@
 ;;
 ;;; Code:
 
+;; =============================================================================
+;; SHELLS
+;; =============================================================================
 
-;;; ESHELL
+(use-package bash-ts-mode
+  :ensure nil
+  :mode ("\\.sh\\'" "\\.bash\\'" "\\.zsh\\'" "\\.command\\'")
+  :hook (bash-ts-mode . lsp-deferred)
+  :config
+  (setq bash-ts-mode-indent-offset 2
+        sh-basic-offset 2
+        indent-tabs-mode nil))
+
+;; =============================================================================
+;; VTERM
+;; =============================================================================
+
+(use-package vterm
+  :demand t
+  :commands (vterm vterm-other-window)
+  :init
+  (setq vterm-max-scrollback 10000)
+  :config
+  (add-to-list 'load-path (concat user-emacs-directory "straight/build/vterm/"))
+  (add-to-list 'display-buffer-alist
+	           '("\\*vterm\*"
+		         (display-buffer-in-side-window)
+		         (window-height . 0.35)
+		         (side . bottom)
+		         (slot . 0))))
+
+
+;; =============================================================================
+;; ESHELL
+;; =============================================================================
+
 (defmacro with-read-only-face (str &rest properties)
   "Add face PROPERTIES to STR."
   (declare (indent 1))
@@ -54,28 +88,27 @@
      (when conda-env-current-name
        (concat
         (with-read-only-face conda-env-current-name
-          :background "#EB6134")
+                             :background "#EB6134")
         (with-read-only-face segment-separator
-          :foreground "#EB6134"
-          :background (face-background 'eshell-git-prompt-powerline-dir-face))))
+                             :foreground "#EB6134"
+                             :background (face-background 'eshell-git-prompt-powerline-dir-face))))
      (if git
          (concat dir
                  (with-read-only-face segment-separator
-                   :foreground (face-background 'eshell-git-prompt-powerline-dir-face)
-                   :background (face-background git-face))
+                                      :foreground (face-background 'eshell-git-prompt-powerline-dir-face)
+                                      :background (face-background git-face))
                  git
                  (with-read-only-face segment-separator
-                   :foreground (face-background git-face)))
+                                      :foreground (face-background git-face)))
        (concat dir
                (with-read-only-face segment-separator
-                 :foreground (face-background 'eshell-git-prompt-powerline-dir-face))))
+                                    :foreground (face-background 'eshell-git-prompt-powerline-dir-face))))
      (with-read-only-face (concat "\n" segment-separator)
-       :foreground (face-background 'eshell-git-prompt-powerline-dir-face))
+                          :foreground (face-background 'eshell-git-prompt-powerline-dir-face))
      (propertize "$" 'invisible t 'read-only t)
      (with-read-only-face " "))))
 
 (defconst eshell-git-prompt-powerline-venv-regexp "^[^$\n]*\\\$ ")
-
 
 (use-package eshell
   :ensure nil
@@ -87,11 +120,17 @@
           eshell-hist-ignoredups t
           eshell-scroll-to-bottom-on-input t
           eshell-scroll-to-bottom-on-output t)
-    (setq eshell-visual-commands '("htop" "top" "tail" "ssh"))))
+    (setq eshell-visual-commands '("htop" "top" "tail" "ssh")))
+  (add-to-list 'display-buffer-alist
+	           '("\\*eshell*\\*"
+		         (display-buffer-in-side-window)
+		         (window-height . 0.35)
+		         (side . bottom)
+		         (slot . 0)))
+  )
 
 (use-package eshell-git-prompt
-  :ensure t
-  :straight t
+  :demand t
   :after eshell
   :config
   (add-to-list 'eshell-git-prompt-themes
@@ -100,30 +139,5 @@
                  eshell-git-prompt-powerline-regexp))
   (eshell-git-prompt-use-theme 'powerline-plus))
 
-
-;;; VTERM
-(use-package vterm
-  :ensure t
-  :straight t
-  :commands vterm
-  :config
-  (add-to-list 'load-path (concat user-emacs-directory "straight/build/vterm/")))
-
-
-;;; POPPER
-(use-package popper
-  :straight t
-  :bind (("M-o"   . popper-toggle)
-         :map popper-mode-map
-         ("M-n" . popper-cycle)
-         ("M-p" . popper-cycle-backwards))
-  :init
-  (setq popper-reference-buffers
-        '("^\\*eshell.*\\*$" eshell-mode
-          "^\\*shell.*\\*$"  shell-mode
-          "^\\*vterm.*\\*$"  vterm-mode))
-  (popper-mode +1)
-  (popper-echo-mode +1))
-
-(provide '+shells)
-;;; +shells.el ends here
+(provide '+terminals)
+;;; +terminals.el ends here
