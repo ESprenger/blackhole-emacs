@@ -49,7 +49,7 @@
                    'append)))
   ;; (add-hook 'lsp-before-initialize-hook #'lsp-update-modeline)
   ;; (add-hook 'lsp-after-initialize-hook #'lsp-update-modeline)
-  ;; (add-hook 'lsp-after-uninitialized-functions #'lsp-update-modeline)
+  ;; (add-hook 'lsp-after-uninitialized-functions #'lsp-update-modeline)x
   ;; (add-hook 'lsp-before-open-hook #'lsp-update-modeline)
   ;; (add-hook 'lsp-after-open-hook #'lsp-update-modeline)
   :hook ((lsp-completion-mode . lsp-mode-setup-completion) ;; setup orderless completion style.
@@ -97,11 +97,11 @@
         lsp-ui-sideline-show-hover nil
         lsp-ui-sideline-actions-icon lsp-ui-sideline-actions-icon-default))
 
-;; (use-package consult-lsp
-;;   :ensure (:build t)
-;;   :after lsp-mode
-;;   :init
-;;   (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols))
+(use-package consult-lsp
+  :after (lsp-mode consult)
+  :init
+  (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols)
+  (define-key lsp-mode-map [remap lsp-treemacs-errors-list] #'consult-lsp-diagnostics))
 
 ;; =============================================================================
 ;; DAP
