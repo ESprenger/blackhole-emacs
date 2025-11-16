@@ -38,7 +38,13 @@
   ;; Bind in +keymaps.el
   (unbind-key "C-c & C-n" yas-minor-mode-map)
   (unbind-key "C-c & C-s" yas-minor-mode-map)
-  (unbind-key "C-c & C-v" yas-minor-mode-map))
+  (unbind-key "C-c & C-v" yas-minor-mode-map)
+  (add-to-list 'display-buffer-alist
+	           '("\\*YASnippet Tables*\*"
+		         (display-buffer-in-side-window)
+		         (window-width . 0.35)
+                 (side . right)
+		         (slot . 0))))
 
 ;; =============================================================================
 ;; DOOM SNIPPETS

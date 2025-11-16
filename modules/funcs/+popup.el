@@ -15,16 +15,18 @@
 
 (defun buffer-exists (buffername) (buffer-live-p (get-buffer buffername)))
 
-(defun my/buffer-pop-hide (name)
+(defun my/buffer-pop-hide (name kill-buffer-true)
   "Hide the existing pop up window with named NAME."
   (let ((buffer (get-buffer-window name)))
-    (delete-window (select-window buffer))))
+    (delete-window (select-window buffer))
+    (if kill-buffer-true
+        (kill-buffer name))))
 
-(defun my/buffer-pop-toggle (name func)
+(defun my/buffer-pop-toggle (name func &optional kill-buffer-true)
   "Toggle buffer pop up window."
   (if (buffer-exists name)
       (if (get-buffer-window name)
-          (my/buffer-pop-hide name)
+          (my/buffer-pop-hide name kill-buffer-true)
         (funcall func))
     (funcall func)))
 
@@ -39,6 +41,10 @@
 (defun my/vterm-toggle ()
   (interactive)
   (my/buffer-pop-toggle "*vterm*" #'vterm))
+
+(defun my/snippet-table-describe-toggle ()
+  (interactive)
+  (my/buffer-pop-toggle "*YASnippet Tables*" #'yas-describe-tables t))
 
 
 

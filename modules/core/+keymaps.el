@@ -35,7 +35,8 @@
 
     "y" (cons "yasnippet" (make-sparse-keymap))
     "y i" '("insert" . yas-insert-snippet)
-    "y d" '("describe" . yas-describe-tables)
+    ;; "y d" '("describe" . yas-describe-tables)
+    "y d" '("describe" . my/snippet-table-describe-toggle)
     "y n" '("new" . yas-new-snippet)
     "y v" '("visit file" . yas-visit-snippet-file)
 

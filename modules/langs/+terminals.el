@@ -44,7 +44,6 @@
 		         (side . bottom)
 		         (slot . 0))))
 
-
 ;; =============================================================================
 ;; ESHELL
 ;; =============================================================================
@@ -88,23 +87,23 @@
      (when conda-env-current-name
        (concat
         (with-read-only-face conda-env-current-name
-                             :background "#EB6134")
+          :background "#EB6134")
         (with-read-only-face segment-separator
-                             :foreground "#EB6134"
-                             :background (face-background 'eshell-git-prompt-powerline-dir-face))))
+          :foreground "#EB6134"
+          :background (face-background 'eshell-git-prompt-powerline-dir-face))))
      (if git
          (concat dir
                  (with-read-only-face segment-separator
-                                      :foreground (face-background 'eshell-git-prompt-powerline-dir-face)
-                                      :background (face-background git-face))
+                   :foreground (face-background 'eshell-git-prompt-powerline-dir-face)
+                   :background (face-background git-face))
                  git
                  (with-read-only-face segment-separator
-                                      :foreground (face-background git-face)))
+                   :foreground (face-background git-face)))
        (concat dir
                (with-read-only-face segment-separator
-                                    :foreground (face-background 'eshell-git-prompt-powerline-dir-face))))
+                 :foreground (face-background 'eshell-git-prompt-powerline-dir-face))))
      (with-read-only-face (concat "\n" segment-separator)
-                          :foreground (face-background 'eshell-git-prompt-powerline-dir-face))
+       :foreground (face-background 'eshell-git-prompt-powerline-dir-face))
      (propertize "$" 'invisible t 'read-only t)
      (with-read-only-face " "))))
 
