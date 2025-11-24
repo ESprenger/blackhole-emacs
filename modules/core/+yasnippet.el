@@ -78,8 +78,12 @@
 (use-package yasnippet-capf
   :demand t
   :after cape
-  :config
-  (add-to-list 'completion-at-point-functions #'yasnippet-capf))
+  :init (defun my/yasnippet-capf-h ()
+          (add-to-list 'completion-at-point-functions #'yasnippet-capf))
+  ;; :config
+  ;; (add-to-list 'completion-at-point-functions #'yasnippet-capf)
+  :hook (prog-mode . my/yasnippet-capf-h)
+  )
 
 
 (provide '+yasnippet)

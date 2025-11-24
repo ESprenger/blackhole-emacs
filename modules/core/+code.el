@@ -34,6 +34,11 @@
   (defun lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults)) '(orderless)) ;; Configure orderless
     )
+  (defun my/lsp-capf-with-yasnippet ()
+    (setq-local completion-at-point-functions (list
+                                               (cape-capf-super
+                                                #'lsp-completion-at-point
+                                                #'yasnippet-capf))))
   (defun lsp-update-modeline (&rest _)
     "Update modeline with lsp state."
     (let* ((workspaces (lsp-workspaces))
@@ -52,6 +57,7 @@
   ;; (add-hook 'lsp-before-open-hook #'lsp-update-modeline)
   ;; (add-hook 'lsp-after-open-hook #'lsp-update-modeline)
   :hook ((lsp-completion-mode . lsp-mode-setup-completion) ;; setup orderless completion style.
+         (lsp-completion-mode . my/lsp-capf-with-yasnippet) ;; integrate yasnippet completions with lsp-mode
          (lsp-mode . lsp-enable-which-key-integration)
          (python-ts-mode . lsp-deferred)
          (clojure-ts-mode . lsp-deferred)

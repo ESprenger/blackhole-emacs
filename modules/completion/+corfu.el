@@ -22,6 +22,7 @@
 (use-package corfu
   :demand t
   :commands (corfu-mode global-corfu-mode)
+  :bind (:map corfu-map ("SPC" . corfu-insert-separator))
   :custom
   (corfu-auto t)                         ;; Only completes when hitting TAB
   (corfu-cycle t)
@@ -31,12 +32,11 @@
   (corfu-min-width 90)
   (corfu-max-width 90)                   ;; Always have the same width
   (corfu-scroll-margin 5)                ;; Margin when scrolling completions
-  (corfu-popupinfo-delay 0.1)            ;; Delay before showing documentation popup
+  ;; (corfu-popupinfo-delay 0.1)            ;; Delay before showing documentation popup
   (text-mode-ispell-word-completion nil) ;; Disable Ispell completion function.
   (read-extended-command-predicate #'command-completion-default-include-p) ;; Hide commands in M-x which do not apply to the current mode.
   (corfu-echo-documentation nil)         ;; Already use corfu-doc
   (completion-styles '(orderless basic))
-  (corfu-echo-documentation nil)
   :init
   (global-corfu-mode)                    ;; Enable Corfu everywhere
   (corfu-history-mode t)                 ;; Remember completions
