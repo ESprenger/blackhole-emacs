@@ -1,4 +1,4 @@
- ;;; +defaults.el --- Description -*- no-byte-compile: t; lexical-binding: t; -*-
+;;; +defaults.el --- Description -*- no-byte-compile: t; lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2025 Evan Sprenger
 ;;

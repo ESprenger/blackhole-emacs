@@ -25,21 +25,37 @@
   :custom
   (corfu-auto t)                         ;; Only completes when hitting TAB
   (corfu-cycle t)
-  (corfu-auto-prefix 1)                  ;; Trigger completion after typing 1 character
+  (corfu-auto-prefix 2)                  ;; Trigger completion after typing 1 character
+  (corfu-auto-delay 0.25)
   (corfu-separator ?\s)
   (corfu-min-width 90)
   (corfu-max-width 90)                   ;; Always have the same width
   (corfu-scroll-margin 5)                ;; Margin when scrolling completions
-  (corfu-popupinfo-delay nil)            ;; Delay before showing documentation popup
+  (corfu-popupinfo-delay 0.1)            ;; Delay before showing documentation popup
   (text-mode-ispell-word-completion nil) ;; Disable Ispell completion function.
-  ;; (read-extended-command-predicate #'command-completion-default-include-p) ;; Hide commands in M-x which do not apply to the current mode.
+  (read-extended-command-predicate #'command-completion-default-include-p) ;; Hide commands in M-x which do not apply to the current mode.
   (corfu-echo-documentation nil)         ;; Already use corfu-doc
   (completion-styles '(orderless basic))
+  (corfu-echo-documentation nil)
   :init
   (global-corfu-mode)                    ;; Enable Corfu everywhere
   (corfu-history-mode t)                 ;; Remember completions
   (corfu-popupinfo-mode t)               ;; Show documentation group
   )
+
+(use-package corfu-doc
+  :elpaca (:host github :repo "galeo/corfu-doc")
+  :defer
+  :after corfu
+  :hook (corfu-mode . corfu-doc-mode)
+  :bind (:map corfu-map
+              ("M-n" . corfu-doc-scroll-down)
+              ("M-p" . corfu-doc-scroll-up))
+  :custom
+  (corfu-doc-delay 0.5)
+  (corfu-doc-max-width 70)
+  (corfu-doc-max-height 20)
+  (corfu-echo-documentation nil))
 
 (provide '+corfu)
 ;;; +corfu.el ends here

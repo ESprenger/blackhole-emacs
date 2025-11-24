@@ -32,8 +32,8 @@
   :commands (lsp lsp-deferred)
   :init
   (defun lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless))) ;; Configure orderless
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults)) '(orderless)) ;; Configure orderless
+    )
   (defun lsp-update-modeline (&rest _)
     "Update modeline with lsp state."
     (let* ((workspaces (lsp-workspaces))
@@ -42,14 +42,13 @@
       (setq lsp-modeline-icon (concat
                                " "
                                (nerd-icons-faicon "nf-fa-rocket")
-                               ;; (+modeline-format-icon 'faicon "nf-fa-rocket" "" face label -0.0575)
                                " "))
       (add-to-list 'global-mode-string
                    '(t (:eval lsp-modeline-icon))
                    'append)))
   ;; (add-hook 'lsp-before-initialize-hook #'lsp-update-modeline)
   ;; (add-hook 'lsp-after-initialize-hook #'lsp-update-modeline)
-  ;; (add-hook 'lsp-after-uninitialized-functions #'lsp-update-modeline)x
+  ;; (add-hook 'lsp-after-uninitialized-functions #'lsp-update-modeline)
   ;; (add-hook 'lsp-before-open-hook #'lsp-update-modeline)
   ;; (add-hook 'lsp-after-open-hook #'lsp-update-modeline)
   :hook ((lsp-completion-mode . lsp-mode-setup-completion) ;; setup orderless completion style.

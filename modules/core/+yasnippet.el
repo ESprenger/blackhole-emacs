@@ -76,6 +76,7 @@
 ;; COMPLETION AT POINT
 ;; =============================================================================
 (use-package yasnippet-capf
+  :demand t
   :after cape
   :config
   (add-to-list 'completion-at-point-functions #'yasnippet-capf))
