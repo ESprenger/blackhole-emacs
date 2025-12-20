@@ -44,6 +44,10 @@
 		         (side . bottom)
 		         (slot . 0))))
 
+(defun my/vterm-toggle ()
+  (interactive)
+  (my/hide-or-call-buffer "*vterm*" #'vterm))
+
 ;; =============================================================================
 ;; ESHELL
 ;; =============================================================================
@@ -137,6 +141,10 @@
                  eshell-git-prompt-powerline-venv
                  eshell-git-prompt-powerline-regexp))
   (eshell-git-prompt-use-theme 'powerline-plus))
+
+(defun my/eshell-toggle ()
+  (interactive)
+  (my/hide-or-call-buffer "*eshell*" #'eshell))
 
 (provide '+terminals)
 ;;; +terminals.el ends here

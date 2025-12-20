@@ -54,6 +54,10 @@
                  (window-parameters (no-delete-other-windows . t)))
                ))
 
+(defun my/ibuffer-toggle ()
+  (interactive)
+  (my/hide-or-call-buffer "*Ibuffer*" #'ibuffer))
+
 
 ;; =============================================================================
 ;; CASUAL

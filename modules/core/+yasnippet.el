@@ -46,6 +46,10 @@
                  (side . right)
 		         (slot . 0))))
 
+(defun my/snippet-table-describe-toggle ()
+  (interactive)
+  (my/hide-or-call-buffer "*YASnippet Tables*" #'yas-describe-tables t))
+
 ;; =============================================================================
 ;; DOOM SNIPPETS
 ;; =============================================================================

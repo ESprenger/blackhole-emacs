@@ -20,6 +20,8 @@
 
 (use-package org
   :ensure nil
+  :hook (org-mode . visual-line-mode)  ;; Soft-wrap and visual indent when not huge
+  ;; (add-hook 'org-mode-hook #'visual-line-mode)
   :config
   ;; Directory setup
   (defvar +org-dir (expand-file-name "~/Documents/org/")
@@ -68,9 +70,7 @@
   (setq org-src-fontify-natively t)    ;; needed for native TAB in blocks [doc]
   (setq org-src-tab-acts-natively t)   ;; TAB delegates to language mode [doc]
   ;; If TAB sluggish in huge blocks, consider toggling per-mode or via a size check.
-
-  ;; Soft-wrap and visual indent when not huge
-  (add-hook 'org-mode-hook #'visual-line-mode))
+  )
 
 
 

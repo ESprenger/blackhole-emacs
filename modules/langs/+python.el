@@ -116,7 +116,7 @@
 			                (require 'lsp-pyright)
 			                (lsp-deferred)))
   :config
-  (setq lsp-pyright-stub-path (concat (getenv "HOME") "/src/python-type-stubs"))
+  ;; (setq lsp-pyright-stub-path (concat (getenv "HOME") "/source/python_type_stubs"))
   (setq lsp-clients-python-library-directories '("/usr/bin/python3" "~/anaconda3/pkgs"))
   (setq lsp-pyright-venv-path "~/anaconda3/envs")
   (setq lsp-pyright-disable-language-service nil)

@@ -13,40 +13,22 @@
 ;;
 ;;; Code:
 
-(defun buffer-exists (buffername) (buffer-live-p (get-buffer buffername)))
 
-(defun my/buffer-pop-hide (name kill-buffer-true)
-  "Hide the existing pop up window with named NAME."
-  (let ((buffer (get-buffer-window name)))
-    (delete-window (select-window buffer))
-    (if kill-buffer-true
-        (kill-buffer name))))
-
-(defun my/buffer-pop-toggle (name func &optional kill-buffer-true)
-  "Toggle buffer pop up window."
-  (if (buffer-exists name)
-      (if (get-buffer-window name)
-          (my/buffer-pop-hide name kill-buffer-true)
-        (funcall func))
-    (funcall func)))
-
-(defun my/ibuffer-toggle ()
-  (interactive)
-  (my/buffer-pop-toggle "*Ibuffer*" #'ibuffer))
-
-(defun my/eshell-toggle ()
-  (interactive)
-  (my/buffer-pop-toggle "*eshell*" #'eshell))
-
-(defun my/vterm-toggle ()
-  (interactive)
-  (my/buffer-pop-toggle "*vterm*" #'vterm))
-
-(defun my/snippet-table-describe-toggle ()
-  (interactive)
-  (my/buffer-pop-toggle "*YASnippet Tables*" #'yas-describe-tables t))
-
-
+(defun my/hide-or-call-buffer (name creation-fn &optional kill-buffer-true)
+  "Hide or call CREATION-FN with NAME."
+  (interactive "sBuffer name:\nsFunction to create buffer as bottom/side window: ")
+  (if (get-buffer name)
+      ;; Buffer already exists, hide it if in window.
+      (let ((window-name (get-buffer-window name)))
+        (if window-name
+            (progn
+              (delete-window window-name)
+              (if kill-buffer-true
+                  (kill-buffer name)))
+          (switch-to-buffer (get-buffer name))))
+    ;; Buffer doesn't exist, call the creation function and show it.
+    (funcall creation-fn)
+    (switch-to-buffer (get-buffer name))))
 
 
 (provide '+popup)
