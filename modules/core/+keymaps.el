@@ -41,6 +41,11 @@
     "y v" '("visit file" . yas-visit-snippet-file)
 
     "c" '(:ignore t :wk "code")
+    "c a" (cons "ai" (make-sparse-keymap))
+    "c a g" '("start" . my/ollama-toggle)
+    "c a r" '("add region" . gptel-add)
+    "c a f" '("add file" . gptel-add-file)
+    "c a r" '("rewrite" . gptel-rewrite)
     ;; "c l" (cons "lsp" lsp-command-map)
 
     "d" '(:ignore t :wk "debugger")

@@ -83,6 +83,7 @@
     "+project"
     "+code"
     "+treemacs"
+    "+ai"
     ))
 
 (defvar completion-module-list
@@ -124,6 +125,8 @@
 (+load-packages org-modules-dir org-module-list)
 (+load-packages core-modules-dir closing-module-list)
 
+
+;; Load hokks for emacs after-init
 (setq custom-file (expand-file-name "+custom.el" core-modules-dir))
 (add-hook 'elpaca-after-init-hook (lambda () (load custom-file  ;; 'noerror
                                                    )))
