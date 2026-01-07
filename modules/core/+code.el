@@ -77,7 +77,7 @@
   (lsp-completion-show-kind nil)
   (lsp-signature-auto-activate nil)
   (lsp-enable-folding nil)
-  (lsp-enable-folding nil)
+  (lsp-keep-workspace-alive nil)
   :config
   (add-to-list 'load-path (expand-file-name "lib/lsp-mode" user-emacs-directory))
   (add-to-list 'load-path (expand-file-name "lib/lsp-mode/clients" user-emacs-directory))
@@ -85,7 +85,6 @@
 
 
 (use-package lsp-ui
-  :after lsp-mode
   :hook (lsp-deferred . lsp-ui-mode)
   :config
   (setq lsp-ui-flycheck-enable t
@@ -100,78 +99,54 @@
         lsp-ui-sideline-ignore-duplicate t
         lsp-ui-doc-show-with-cursor t
         lsp-ui-sideline-show-hover nil
-        lsp-ui-sideline-actions-icon lsp-ui-sideline-actions-icon-default))
+        lsp-ui-sideline-actions-icon lsp-ui-sideline-actions-icon-default)
+  (define-key lsp-ui-mode-map
+              [remap xref-find-definitions]
+              #'lsp-ui-peek-find-definitions)
+  (define-key lsp-ui-mode-map
+              [remap xref-find-references]
+              #'lsp-ui-peek-find-references))
 
 (use-package consult-lsp
   :after (lsp-mode consult)
-  :init
-  (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols)
-  (define-key lsp-mode-map [remap lsp-treemacs-errors-list] #'consult-lsp-diagnostics))
+  :config
+  (define-key lsp-mode-map
+              [remap xref-find-apropos]
+              #'consult-lsp-symbols)
+  (define-key lsp-mode-map
+              [remap lsp-treemacs-errors-list]
+              #'consult-lsp-diagnostics))
 
 ;; =============================================================================
 ;; DAP
 ;; =============================================================================
-;; (use-package dap-mode
-;;   :straight t
-;;   :hook (lsp-deferred . dap-mode)
-;;   :custom
-;;   (dap-auto-configure-mode t)
-;;   (dap-auto-configure-features '(sessions locals breakpoints expressions controls tooltip))
-;;   :config
-;;   ;; Python
-;;   (require 'dap-python)
-;;   (setq dap-python-debugger 'debugpy)
-;;   (dap-register-debug-template "Python Run"
-;;                                (list :type "python"
-;;                                      :args "-i"
-;;                                      :cwd nil
-;;                                      :env '(("DEBUG" . "1"))
-;;                                      :target-module nil
-;;                                      :request "launch"
-;;                                      :name "Python Run"))
-;;   (dap-register-debug-template "Python :: Attach to running process"
-;;                                (list :type "python"
-;;                                      :request "attach"
-;;                                      :processId "${command:pickProcess}"
-;;                                      :name "Python :: Attach to running process"))
-;;   ;; OTHER
-;;   (add-hook 'dap-stopped-hook
-;;             (lambda (arg) (call-interactively #'dap-hydra)))
-;;   )
-
-;; =============================================================================
-;; DAPE
-;; =============================================================================
-(use-package dape
-  :preface (setq dape-key-prefix (kbd "C-c d"))
+(use-package dap-mode
+  :demand t
+  :hook (lsp-deferred . dap-mode)
   :custom
-  (dape-breakpoint-global-mode +1)
-  (dape-buffer-windows-arrangement 'right)
-  (dape-cwd-function #'projectile-project-root)
+  (dap-auto-configure-mode t)
+  (dap-auto-configure-features '(sessions locals breakpoints expressions controls tooltip))
   :config
-  (add-hook 'dape-display-source-hook #'pulse-momentary-highlight-one-line)
-
-  ;; Save buffers on startup, useful for interpreted languages
-  ;; (add-hook 'dape-start-hook (lambda () (save-some-buffers t t)))
-
-  ;; Kill compile buffer on build success
-  (add-hook 'dape-compile-hook #'kill-buffer)
-  ;; Python Debug Config
-  (add-to-list 'dape-configs
-               `(debugpy
-                 modes (python-ts-mode)
-                 command "python"
-                 command-args ("-m" "debugpy.adpater")
-                 :type "executable"
-                 :request "launch"
-                 :cwd dape-cwd-fn
-                 :program dape-find-file-buffer-default))
+  ;; Python
+  (require 'dap-python)
+  (setq dap-python-debugger 'debugpy)
+  (dap-register-debug-template "Python Run"
+                               (list :type "python"
+                                     :args "-i"
+                                     :cwd nil
+                                     :env '(("DEBUG" . "1"))
+                                     :target-module nil
+                                     :request "launch"
+                                     :name "Python Run"))
+  (dap-register-debug-template "Python :: Attach to running process"
+                               (list :type "python"
+                                     :request "attach"
+                                     :processId "${command:pickProcess}"
+                                     :name "Python :: Attach to running process"))
+  ;; OTHER
+  (add-hook 'dap-stopped-hook
+            (lambda (arg) (call-interactively #'dap-hydra)))
   )
-
-(use-package repeat
-  :ensure nil
-  :custom
-  (repeat-mode +1))
 
 (provide '+code)
 ;;; +code.el ends here

@@ -87,6 +87,50 @@
 (use-package doom-modeline
   :defer t
   :init (doom-modeline-mode 1)
+  :config
+  (progn
+    (require 'doom-modeline-segments)
+    (doom-modeline-def-segment python-env
+      "The current python environment.  Works with `uv'."
+      (let ((venv-name (getenv "VIRTUAL_ENV_PROMPT")))
+        (if venv-name
+            (propertize
+             (format "|venv: %s|" venv-name)
+             'face '(:weight bold :foreground "#7dc4e4")
+             'help-echo (concat "Python environment: " venv-name)))))
+    (doom-modeline-def-modeline 'main
+      '(eldoc
+        bar
+        workspace-name
+        window-number
+        modals
+        matches
+        follow
+        buffer-info
+        remote-host
+        buffer-position
+        word-count
+        parrot
+        selection-info)
+      '(python-env
+        project-name
+        compilation
+        objed-state
+        misc-info
+        grip
+        github
+        debug
+        repl
+        lsp
+        minor-modes
+        input-method
+        indent-info
+        buffer-encoding
+        major-mode
+        process
+        vcs
+        check
+        time)))
   :custom
   (doom-modeline-project-detection 'projectile)        ;; Enable project detection for displaying the project name.
   (doom-modeline-buffer-file-name-style 'truncate-nil)
@@ -95,14 +139,13 @@
   (doom-modeline-height 30)
   ;; (doom-modeline-minor-modes t)
   (doom-modeline-lsp t)
-  (doom-modeline-modal t)
-  (doom-modeline-modal-icon t)
+  ;; (doom-modeline-modal t)
+  ;; (doom-modeline-modal-icon t)
   (doom-modeline-major-mode-color-icon t)
-  (doom-modeline-buffer-name t)
   (doom-modeline-column-zero-based t)
   (doom-modeline-project-name t)
   (doom-modeline-icon t)
-  (doom-modeline-spc-face-overrides (list :family (face-attribute 'fixed-pitch :family)))
+  ;; (doom-modeline-spc-face-overrides (list :family (face-attribute 'fixed-pitch :family)))
   )
 
 ;; =============================================================================

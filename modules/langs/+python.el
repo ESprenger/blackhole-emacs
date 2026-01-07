@@ -16,14 +16,10 @@
 ;;; PYTHON
 
 
-(defvar my/python-bindings
-  (list
-   '("C-c C-p" 'run-python)
-   '("C-c C-j" 'imenu)))
-
 (use-package python-mode
   :ensure nil
   :mode (("\\.py\\'" . python-ts-mode)))
+
 
 (defun process-python-keybind-remaps ()
   ;; Run
@@ -49,7 +45,7 @@
   ;; (my/process-keybind-edit  "C-c l C-t f" 'python-skeleton-for python-ts-mode-map)
   (unbind-key "C-c C-t i" python-ts-mode-map)
   ;; (my/process-keybind-edit "C-c C-t i" "C-c l C-t i" 'python-skeleton-if python-ts-mode-map)
-  (unbind-key "C-c C-t m" python-ts-mode-map)
+  (unbind-key "C-c C-t m" python-ts-mode-map)f
   ;; (my/process-keybind-edit "C-c C-t m" "C-c l C-t m" 'python-skeleton-import python-ts-mode-map)
 
   (unbind-key "C-c C-t w" python-ts-mode-map)
@@ -65,32 +61,6 @@
   )
 
 (add-hook 'python-ts-mode-hook 'process-python-keybind-remaps)
-
-;; (add-hook 'python-ts-mode-hook (lambda () (local-set-key (kbd "C-c l") python-ts-mode-map)))
-
-;; (defun my/python-keybinds ()
-;;   (let (my-keybinds '('("C-c C-p" "C-c l C-p" 'run-python)
-;;                       '("C-c C-j" "C-c l C-j" 'imenu)))
-;;     (dolist (n-entry my-keybinds)
-;;       (my/process-keybind-edit (nth 0 n-entry) (nth 1 n-entry) (nth 2 n-entry) python-ts-mode-map))))
-
-;; (add-hook 'python-ts-mode-hook (lambda () (my/process-keybind-edit "C-c C-p" "C-c l C-p" 'run-python python-ts-mode-map)))
-;; (add-hook 'python-ts-mode-hook (lambda () (my/python-keybinds)))
-
-(use-package conda
-  :demand t
-  :custom
-  (conda-anaconda-home "~/anaconda3")
-  (conda-env-home-directory "~/anaconda3")
-  (conda-env-subdirectory "envs")
-  :config
-  (progn
-    (conda-env-initialize-interactive-shells)
-    (conda-env-initialize-eshell)
-    (conda-env-activate "base"))
-  (add-to-list 'global-mode-string
-               '(conda-env-current-name (" conda:" conda-env-current-name " "))
-               'append))
 
 (use-package numpydoc
   :demand t
@@ -112,18 +82,26 @@
   :demand t)
 
 (use-package lsp-pyright
+  :custom (lsp-pyright-langserver-command "basedpyright")
   :hook (python-ts-mode . (lambda ()
 			                (require 'lsp-pyright)
 			                (lsp-deferred)))
   :config
   ;; (setq lsp-pyright-stub-path (concat (getenv "HOME") "/source/python_type_stubs"))
-  (setq lsp-clients-python-library-directories '("/usr/bin/python3" "~/anaconda3/pkgs"))
-  (setq lsp-pyright-venv-path "~/anaconda3/envs")
+  ;; (setq lsp-clients-python-library-directories '("/usr/bin/python3" "~/anaconda3/pkgs"))
+  ;; (setq lsp-pyright-venv-path "~/anaconda3/envs")
   (setq lsp-pyright-disable-language-service nil)
   (setq lsp-pyright-disable-organize-imports t)
   (setq lsp-pyright-use-library-code-for-types t) ;; set this to nil if getting too many false positive type errors
-  (setq lsp-pyright-auto-import-completions t))
+  (setq lsp-pyright-auto-import-completions t)
+  (setq lsp-pyright-multi-root nil))
 
+(use-package envrc
+  :demand t
+  :hook (after-init . envrc-global-mode)
+  :config
+  (setq envrc-show-summary-in-minibuffer t
+        envrc-update-on-eshell-directory-change t))
 
 (provide '+python)
 ;;; +python.el ends here

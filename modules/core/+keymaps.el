@@ -90,9 +90,9 @@
 
   (local-leader-key 'emacs-lisp-mode-map
     "" '(:ignore t :wk "leader")
-    "b" '("Compile Buffer" . elisp-byte-compile-buffer)
-    "e" '("Eval Region/Buffer" . elisp-eval-region-or-buffer)
-    "f" '("Compille File" . elisp-byte-compile-file))
+    "b" '("compile buffer" . elisp-byte-compile-buffer)
+    "e" '("eval region/buffer" . elisp-eval-region-or-buffer)
+    "f" '("compille file" . elisp-byte-compile-file))
 
   (local-leader-key 'org-mode-map
     "" '(:ignore t :wk "leader")
@@ -116,9 +116,13 @@
   (local-leader-key 'python-ts-mode-map
     "" '(:ignore t :wk "leader")
     "t" (cons "test" (make-sparse-keymap))
-    "t f" 'python-pytest-file
+    "t a" 'python-pytest
+    "t f" 'python-pytest-file-dwim
+    "t F" 'python-pytest-file
     "t p" 'python-pytest-dispatch
     "t r" 'python-pytest-repeat
+    "t t" 'python-pytest-run-def-or-class-at-point-dwim
+    "t T" 'python-pytest-run-def-or-class-at-point
     "C-t" '(:ignore t :wk "skeletons")
     "TAB" '(:ignore t :wk "python-imports")
 
@@ -127,7 +131,7 @@
     "i r" (cons "Remove unused" 'pyimport-remove-unused)
     "i s" (cons "Sort" 'py-isort-buffer)
 
-    "c" '("conda-activate" . conda-env-activate)
+    ;; "c" '("conda-activate" . conda-env-activate)
     "n" 'numpydoc-generate
     "p" (cons "poetry" 'poetry))
 
